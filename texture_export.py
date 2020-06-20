@@ -9,7 +9,7 @@ bl_info = {
     'location': 'View3D > Toolbar > Texture Export',
     'description': 'Texture Export Blender Plugin for exporting textures as images in PNG or JPG format.',
     'warning': '',
-    'wiki_url': '',
+    'wiki_url': 'https://github.com/markokosticdev/texture-export-blender-plugin',
     'category': 'Texture Export',
 }
  
@@ -55,7 +55,7 @@ class TextureExportPanel(bpy.types.Panel):
 # Input Files Operator configuration for global property input_files 
 class TextureExportInputOperator(bpy.types.Operator, bpy_extras.io_utils.ImportHelper):
     bl_idname = 'texture_export.input'
-    bl_label = 'Import From'
+    bl_label = 'Accept'
     bl_description = 'Texture Export Input'
     bl_options = {'REGISTER', 'UNDO'}
 
@@ -114,7 +114,9 @@ class TextureExportExportOperator(bpy.types.Operator):
         
         # Change the context for adding light objects
         context.area.ui_type = 'VIEW_3D'
-        bpy.ops.object.mode_set(mode='OBJECT')
+        bpy.ops.object.select_by_type(type='MESH')
+        if context.selected_objects:
+            bpy.ops.object.mode_set(mode='OBJECT')
         bpy.ops.object.select_all(action='DESELECT')
         bpy.ops.object.select_by_type(type='LIGHT')
         bpy.ops.object.delete()
@@ -151,7 +153,7 @@ class TextureExportExportOperator(bpy.types.Operator):
             context.area.ui_type = 'VIEW_3D'
             bpy.ops.object.mode_set(mode='OBJECT') 
             bpy.ops.object.select_all(action='DESELECT')
-            bpy.ops.object.select_by_type(type='MESH')       
+            bpy.ops.object.select_by_type(type='MESH')
             bpy.ops.object.delete() 
             
             # Import object from file
